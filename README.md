@@ -1,2 +1,4 @@
 # prog-challenges-c
-My attempt at facing 4chan's /g/ pro/g/ramming challenges using C
+This is my attempt at coding the shit out of the stuff listed on the photo below.
+
+![Pro/g/ramming Challenges v1.4c](/img/pc.png)
