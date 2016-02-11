@@ -30,3 +30,9 @@
 
 # Debug files
 *.dSYM/
+
+# vim's garbage
+.*.swp
+
+# binaries
+01
