@@ -3,81 +3,81 @@
  *
  * Author: Stanisław Drozd <drozdziak1@gmail.com>
  */
-#include <stdio.h>   // printf()
-#include <stdlib.h>  // srand(), rand()
-#include <time.h>    // time()
-#include <ctype.h>   // isdigit()
-#include <limits.h>  // INT_MAX, INT_MIN
-#include <stdbool.h> // bool
-#include <errno.h>   // errno
-#include <string.h>  // strlen()
+#define _DEFAULT_SOURCE // for bsd/stdlib.h
 
-static char* bin_name;
+#include <stdio.h>      // printf()
+#include <stdlib.h>     // srand(), rand()
+#include <time.h>       // time()
+#include <string.h>     // strlen()
+#include <limits.h>     // for bsd/stdlib.h
+#include <bsd/stdlib.h> // strtonum()
+#include <errno.h>      // errno
+#include <string.h>     // strcmp()
+
+static const char* bin_name;
 
 void print_help(void);
-void arg_validate(char* arg); // for easier reading
-void die(const char* message);
 
 int main(int argc, char* argv[])
 {
     bin_name = argv[0]; // for print_help()
     srand(time(NULL));
 
-    int min = 0, max = 1, count = 1;
+    // For displaying all errors at once
+    const char *count_err, *min_err, *max_err;
 
+    int min, max, count;
+
+    switch (argc) { // parse args based on their quantity
+
+    case 4:
+        count = (int)strtonum(argv[3], INT_MIN, INT_MAX, &count_err);
+
+        if (count_err)
+            printf("Count is %s\n", count_err);
+
+    case 3:
+        min = (int)strtonum(argv[1], INT_MIN, INT_MAX, &min_err);
+
+        if (min_err)
+            printf("Min is %s\n", min_err);
+
+        max = (int)strtonum(argv[2], INT_MIN, INT_MAX, &max_err);
+
+        if (max_err)
+            printf("Max is %s\n", max_err);
+
+        if (errno)
+            exit(1);
+
+        break;
+
+    case 1: // "default" behavior
+        min = 0;
+        max = 1;
+        count = 1;
+        break;
+
+    default:
+        print_help();
+        exit(1);
+    }
+
+    // Provide correct spelling depending on count
+    printf("Your random number%s:\n", (count > 1) ? "s" : "");
+
+    // Spit number(s) out in the desired range
     for (int i = 0; i < count; i++)
-        // Spit out a number in the desired range
-        printf("%d\n", rand() % (max - min + 1) + min);
-
-    arg_validate("234");
-    arg_validate("2432983409809803");
-
-    /*print_help();*/
+        printf("%d ", rand() % (max - min + 1) + min);
 
     return 0;
 }
 
 void print_help(void)
 {
-    puts("01 - Higher/Lower, heads/tails");
-    puts("This thing is supposed to return [count] (1 by default)");
-    puts("integers between [bottom] and [top], 0 and 1 by default.");
-    printf("Usage: %s [count] [bottom top]", bin_name);
-}
+    puts("01 - Higher/Lower, heads/tails\n"
+         "This thing is supposed to return [count] (1 by default)\n"
+         "integers between [bottom] and [top], 0 and 1 by default.\n");
 
-// TODO: Determine if the argument is okay to cram into an int reliably
-void arg_validate(char arg[])
-{
-    for (int i = 0; i < strlen(arg); i++) { // Make sure we're dealing with a number
-
-        if (!isdigit(arg[i])) {
-
-            printf("%s:\n", arg);
-            die("argument is not a number");
-        }
-    }
-
-    if (atoi(arg) <= INT_MIN) {
-
-        printf("%s:\n", arg);
-        die("argument below range");
-    }
-
-    if (atoi(arg) >= INT_MAX) {
-
-        printf("%s:\n", arg);
-        die("argument above range");
-    }
-}
-
-void die(const char* message)
-{
-    if (errno) {
-        perror(message);
-    }
-    else {
-        printf("ERROR: %s\n", message);
-    }
-
-    exit(1);
+    printf("Usage: %s [bottom top] [count]", bin_name);
 }
