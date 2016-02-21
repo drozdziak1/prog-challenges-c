@@ -40,8 +40,8 @@ int main(int argc, char* argv[])
     switch (argv[1][1]) {
 
     case 'c':
-        printf("%.2fF\n", ctof(temp));
         printf("%.2fK\n", ctok(temp));
+        printf("%.2fF\n", ctof(temp));
 
         break;
 

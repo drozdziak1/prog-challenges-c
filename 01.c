@@ -26,7 +26,7 @@ int main(int argc, char* argv[])
     // For displaying all errors at once
     const char *count_err, *min_err, *max_err;
 
-    int min, max, count;
+    int min = 0, max = 1, count = 1;
 
     switch (argc) { // parse args based on their quantity
 
@@ -53,9 +53,6 @@ int main(int argc, char* argv[])
         break;
 
     case 1: // "default" behavior
-        min = 0;
-        max = 1;
-        count = 1;
         break;
 
     default:
