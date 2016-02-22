@@ -14,5 +14,7 @@ release: $(objs)
 
 02: die.o
 
+03: die.o
+
 clean:
 	rm -f $(objs)
