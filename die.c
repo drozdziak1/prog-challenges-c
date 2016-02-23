@@ -6,12 +6,10 @@
 
 void die(const char* message)
 {
-    if (errno) {
+    if (errno)
         perror(message);
-    }
     else {
         printf("ERROR: %s\n", message);
+        exit(EXIT_FAILURE);
     }
-
-    exit(EXIT_FAILURE);
 }

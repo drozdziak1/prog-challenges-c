@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-Wall -std=c99 -lbsd
+CFLAGS=-Wall -std=c99 -lbsd -lm
 
 objs = 01 02 03
 objs += die.o
