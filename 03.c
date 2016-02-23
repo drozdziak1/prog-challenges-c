@@ -49,7 +49,7 @@ int main(int argc, char** argv)
 
     seconds = time(NULL) - mktime(&birthday);
     secs_positive = (seconds > 0);
-    seconds = labs(seconds); // We don't this signed in output
+    seconds = labs(seconds); // We don't want this signed in output
 
     years = abs((int)sectoy(seconds)); // Same here
 
